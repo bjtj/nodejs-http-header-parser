@@ -1,6 +1,6 @@
 {
   "name": "nodejs-http-header-parser",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/bjtj/nodejs-http-header-parser/issues"
   },
-  "homepage": "https://github.com/bjtj/nodejs-http-header-parser#readme"
+  "homepage": "https://github.com/bjtj/nodejs-http-header-parser#readme",
+  "dependencies": {
+    "chai": "^4.3.6"
+  }
 }

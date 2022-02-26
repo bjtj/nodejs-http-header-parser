@@ -10,7 +10,12 @@ function split(str, sep, n) {
     return out;
 }
 
-module.exports = function(txt, allowMultiple = false) {
+module.exports = function parse(txt, options = {}) {
+	let opts = {
+		allowMultiple: false,
+		lowercaseKey: false,
+		...options
+	};
 	let lines = txt.replace(/^\s+|\s+$/, '').split('\r\n')
 	if (lines.length < 1) {
 		throw 'parser failed';
@@ -22,16 +27,21 @@ module.exports = function(txt, allowMultiple = false) {
 		let kv = split(line, /:/g, 2).map((elm) => {
 			return elm.replace(/^\s+|\s+$/, '')
 		});
-		if (allowMultiple) {
-			if (headers[kv[0]] === undefined) {
-				headers[kv[0]] = kv[1];
-			} else if (Array.isArray(headers[kv[0]])) {
-				headers[kv[0]].push(kv[1]);
+		let key = kv[0]
+		if (opts.lowercaseKey) {
+			key = key.toLowerCase()
+		}
+		let value = kv[1]
+		if (opts.allowMultiple) {
+			if (headers[key] === undefined) {
+				headers[key] = value;
+			} else if (Array.isArray(headers[key])) {
+				headers[key].push(value);
 			} else {
-				headers[kv[0]] = [headers[kv[0]], kv[1]];
+				headers[key] = [headers[key], value];
 			}
 		} else {
-			headers[kv[0]] = kv[1];
+			headers[key] = value;
 		}
 	}
 	return { 'firstline': parts, 'headers': headers };
